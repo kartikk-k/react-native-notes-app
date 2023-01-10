@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Platform } from 'react-native';
+import Folder from './screens/Folder';
+import Home from './screens/Home';
+import Note from './screens/Note';
+import NewFolder from './screens/NewFolder';
+
+import Login from './screens/Login';
+import Register from './screens/Register';
+
+import { AuthProvider } from './context/AuthContext';
+import NotesContext, { NotesProvider } from './context/NotesContext';
+
 
 export default function App() {
+  const Stack = createNativeStackNavigator()
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <AuthProvider>
+        <NotesProvider>
+          <Stack.Navigator>
+            <Stack.Screen name='Home' component={Home} />
+            <Stack.Screen name='Folder' component={Folder} />
+            <Stack.Screen name='Note' component={Note} />
+            <Stack.Screen name='NewFolder' component={NewFolder} options={{ presentation: 'modal', headerShown: false, }} />
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Screen name='Register' component={Register} />
+          </Stack.Navigator>
+        </NotesProvider>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
